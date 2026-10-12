@@ -45,12 +45,13 @@ uvicorn app.main:app --reload
 ### Frontend
 ```bash
 cd frontend
-npm create vite@latest . -- --template react-ts   # first time only
 npm install
-npm install -D tailwindcss postcss autoprefixer @uiw/react-codemirror @codemirror/lang-python
-cp .env.example .env.local   # fill in VITE_API_BASE_URL
-npm run dev
+npm run dev          # http://localhost:5173 -> opens on /login
 ```
+No `.env.local` needed to try it: the app runs against an in-browser mock
+API. Log in as `asha` / `python123`, or sign up to take the assessment.
+To hit the real backend: `cp .env.example .env.local`, set
+`VITE_USE_MOCK_API=false` and `VITE_API_BASE_URL`. See `frontend/README.md`.
 
 ### Infra
 See `infra/README.md` and `backend-spec.md` §9 before running any Terraform.

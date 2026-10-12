@@ -1,6 +1,7 @@
 # Showcase
 
-Empty for now — fill this in once the MVP is working.
+Not written yet — fill this in once the MVP is working. Until then, the
+**Progress so far** section below is a running summary to draw from.
 
 This is the polished version of `journal/`: a write-up meant for other
 people (a portfolio piece, an interview leave-behind, a LinkedIn post),
@@ -18,3 +19,24 @@ not your own working notes. A structure worth aiming for:
 Want a Word or PDF version to send someone? Generate it from this file
 once it's written, rather than maintaining both in parallel — markdown
 here stays the single source of truth.
+
+---
+
+## Progress so far (draft material, not the final write-up)
+
+| Date | Milestone | Highlights worth telling |
+|---|---|---|
+| 2026-10-11 | Specs + architecture | Spec-driven setup: goal / backend / frontend / API-contract specs, plus a diagram blueprint |
+| 2026-10-12 | Frontend v0.1 | All five screens working end to end against an in-browser mock of the API contract, so the full learner journey was clickable before any backend code existed |
+
+**Candidate "what I learned" points so far:**
+- Building a mock of the *contract* (not of the UI) let the frontend be
+  finished and tested against real business rules before the backend
+  existed — and the mock doubles as an executable reading of the spec.
+- Agent-backed calls are slow by nature; giving each one its own loading
+  label ("Grading your code…", "Thinking…") makes the wait read as work,
+  not a hang.
+- Bundle size: one heavy dependency (the code editor) was two-thirds of the
+  app. Route-level lazy loading fixed it.
+
+Screenshots to use: see the capture checklist in `../assets/README.md`.

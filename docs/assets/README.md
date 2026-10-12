@@ -13,3 +13,15 @@ Suggested subfolders as they fill up:
 
 Keep file names descriptive and dated where it matters, e.g.
 `2026-10-11-login-mockup.png`.
+
+## Capture checklist — frontend v0.1 (2026-10-12)
+
+Not captured yet. Take these once you've run `npm run dev` (mock mode is
+fine), save under `screenshots/`, and they're ready for `showcase/`:
+
+- [ ] `2026-10-12-login.png` — `/login` with the demo-mode hint
+- [ ] `2026-10-12-assessment.png` — `/assessment` mid-way (one MCQ, one code question)
+- [ ] `2026-10-12-home-curriculum.png` — `/curriculum` as `asha` (completed / current / locked rows)
+- [ ] `2026-10-12-lesson-failed.png` — lesson after submitting the starter code (failed tests + review)
+- [ ] `2026-10-12-lesson-passed-chat.png` — passed result + a tutor chat exchange
+- [ ] `2026-10-12-mobile-lesson.png` — the lesson page at phone width (DevTools device mode)

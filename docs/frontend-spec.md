@@ -14,6 +14,8 @@
 - Local/UI state: React `useState` + Context (no global store library)
 - **Code editor:** CodeMirror 6 (e.g. `@uiw/react-codemirror`) for the in-browser Python editor with syntax highlighting. No in-browser execution (e.g. Pyodide) for MVP — all execution happens server-side in the Sandbox (`backend-spec.md` §6), keeping the client a thin editor + display layer.
 - Hosting: Vercel (static SPA build, no serverless functions needed)
+- **Versions (as built, 2026-10-12):** React 19, React Router 7, TanStack Query 5, Vite 6, Tailwind CSS 3.4 (v3 kept deliberately so the `tailwind.config.js` token block in §7 applies as written), TypeScript 5.6.
+- **Mock API (dev-only):** an in-browser implementation of every `api-contract-spec.md` endpoint lives in `src/api/mock/`, so the UI is fully clickable before the backend exists. See §10 for the switch. It's a stand-in, not a second source of truth — the contract still governs, and the mock should be deleted once the real API is deployed.
 
 ## 2. Application Structure
 <!-- High-level folder/module layout, if you have opinions upfront. -->
@@ -22,6 +24,7 @@ src/
   main.tsx
   App.tsx                 # routes + providers
   api/                     # API client, React Query hooks (useCurriculum, useLesson, ...)
+    mock/                  # in-browser mock of the API contract (dev/demo only, see §10)
   auth/                    # AuthContext, ProtectedRoute
   pages/
     LoginPage.tsx
@@ -37,6 +40,9 @@ src/
     TutorChat.tsx
     ProgressBar.tsx
     AppShell.tsx           # minimal header wrapper for authenticated pages
+    AuthLayout.tsx         # centered card for /login and /signup
+    CredentialsForm.tsx    # shared by LoginForm / SignupForm
+    Feedback.tsx           # LoadingLabel + ErrorMessage (loading/error states, §7)
   types/                   # shared TS types, mirroring api-contract-spec.md schemas
 ```
 
@@ -64,6 +70,7 @@ src/
 - `TutorChat` — scrollable message list (learner / tutor agent) plus an input box, scoped to the current Lesson
 - `ProgressBar` — small mastery-level indicator (0–5), reused in both `CurriculumTrack` and the Lesson header
 - `ProtectedRoute` — route wrapper that redirects to `/login` when there's no authenticated session
+- `PublicOnlyRoute` — inverse guard for `/login` and `/signup`: an already-authenticated user is sent to `/curriculum`
 
 ## 5. State Management
 <!-- What's global state vs. local/component state vs. server cache (e.g. React Query). How is auth state handled? -->
@@ -157,6 +164,7 @@ theme: {
 }
 ```
 - **API base URL:** never hardcoded. Read from a build-time env var, e.g. `VITE_API_BASE_URL`, set per Vercel environment (Production / Preview / Development) in the project settings, and referenced in the API client as `import.meta.env.VITE_API_BASE_URL`.
+- **Mock API switch:** `VITE_USE_MOCK_API=true` routes every request to `src/api/mock/` instead of the network (data persisted in `localStorage`, seeded with a demo learner `asha` / `python123`). If the flag is unset, mock mode is used only when `VITE_API_BASE_URL` is also unset — so a fresh clone runs with zero config, while any environment that sets a base URL talks to the real API. **Production/Preview on Vercel must set `VITE_USE_MOCK_API=false`** (or simply set `VITE_API_BASE_URL` and leave the flag unset). The UI shows a "Demo mode" banner whenever the mock is active, so it can't be mistaken for the real thing.
 - **CORS:** Preview deployments hit the same production API as Production (no separate staging backend, matching `backend-spec.md`'s single-environment setup), so the backend must allow both the Vercel production domain and its `*.vercel.app` preview domains as CORS origins.
 - **HTTPS:** automatic on Vercel — relevant since the app sends an auth token on every request.
 

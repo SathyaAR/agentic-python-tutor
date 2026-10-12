@@ -12,6 +12,9 @@ Read in order:
    screen wireframes, system architecture, workflow diagrams, deployment
    pipelines
 
+**Just want to run it?** See **workflow.md**: how to launch the app and
+what a learner can do in it, in plain language.
+
 ## Beyond the specs
 
 - **journal/** — a running, dated log of decisions, problems hit, and
